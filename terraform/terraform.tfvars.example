@@ -1,0 +1,18 @@
+# =============================================================================
+# terraform.tfvars.example
+# Renomeie para terraform.tfvars e ajuste os valores antes de aplicar.
+# O arquivo terraform.tfvars está no .gitignore para evitar vazamento de dados.
+# =============================================================================
+
+aws_region   = "us-east-1"
+project_name = "tcc-pucminas-lime"
+
+# Recomendado: t3.medium ou superior para compilar o módulo de kernel do LiME
+instance_type = "t3.medium"
+
+# IMPORTANTE: restrinja ao seu IP público para não expor a porta 22 à internet
+# Para descobrir seu IP: curl -s ifconfig.me
+allowed_ssh_cidrs = ["SEU_IP_PUBLICO/32"]
+
+# Tamanho do volume raiz em GiB (mínimo 20 para AL2023 + headers + build)
+volume_size_gb = 20
