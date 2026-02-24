@@ -64,5 +64,8 @@ __pycache__/
 venv/
 env/
 
+# ── Lambdas empacotadas (geradas pelo terraform archive_file) ────────────────
+lambdas/.zip/
+
 # ── Logs ─────────────────────────────────────────────────────────────────────
 *.log
