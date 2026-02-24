@@ -25,7 +25,7 @@ locals {
   common_tags = {
     Project     = var.project_name
     ManagedBy   = "Terraform"
-    Description = "TCC PUC Minas – Forense de Memória com LiME"
+    Description = "TCC PUC Minas - Forense de Memoria com LiME"
   }
 }
 
@@ -72,8 +72,8 @@ resource "aws_key_pair" "ssh" {
   tags = local.common_tags
 }
 
-# Salva a chave privada no diretório terraform/ com permissão 0400
-# O arquivo *.pem está coberto pelo .gitignore da raiz do repo
+# Salva a chave privada no diretorio terraform/ com permissao 0400
+# O arquivo *.pem esta coberto pelo .gitignore da raiz do repo
 resource "local_sensitive_file" "private_key" {
   content         = tls_private_key.ssh.private_key_pem
   filename        = "${path.module}/${var.project_name}.pem"
@@ -111,7 +111,7 @@ resource "aws_iam_instance_profile" "ec2_ssm" {
 }
 
 # =============================================================================
-# Rede: VPC e subnets padrão da conta
+# Rede: VPC e subnets padrao da conta
 # =============================================================================
 data "aws_vpc" "default" {
   default = true
@@ -129,7 +129,7 @@ data "aws_subnets" "default" {
 # =============================================================================
 resource "aws_security_group" "lime_instance" {
   name        = "${var.project_name}-sg"
-  description = "SG da instância de forense de memória – TCC PUC Minas"
+  description = "SG da instancia de forense de memoria - TCC PUC Minas"
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
@@ -141,7 +141,7 @@ resource "aws_security_group" "lime_instance" {
   }
 
   egress {
-    description = "Saída livre (necessário para dnf e git durante provisionamento)"
+    description = "Saida livre (necessario para dnf e git durante provisionamento)"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -152,7 +152,7 @@ resource "aws_security_group" "lime_instance" {
 }
 
 # =============================================================================
-# EC2: Instância Amazon Linux 2023 com SSM + LiME
+# EC2: Instancia Amazon Linux 2023 com SSM + LiME
 # =============================================================================
 resource "aws_instance" "lime" {
   ami                         = data.aws_ami.amazon_linux_2023.id
@@ -163,20 +163,20 @@ resource "aws_instance" "lime" {
   vpc_security_group_ids      = [aws_security_group.lime_instance.id]
   associate_public_ip_address = true
 
-  # Script de provisionamento: instala dependências, compila e configura o LiME
+  # Script de provisionamento: instala dependencias, compila e configura o LiME
   user_data = file("${path.module}/userdata.sh")
 
-  # Força nova instância se o userdata mudar
+  # Forca nova instancia se o userdata mudar
   user_data_replace_on_change = true
 
   root_block_device {
-    volume_type           = "gp3"
+    volume_type           = "gp2"
     volume_size           = var.volume_size_gb
     encrypted             = true
     delete_on_termination = true
   }
 
-  # IMDSv2 obrigatório (boa prática de segurança)
+  # IMDSv2 obrigatorio (boa pratica de seguranca)
   metadata_options {
     http_tokens                 = "required"
     http_put_response_hop_limit = 1

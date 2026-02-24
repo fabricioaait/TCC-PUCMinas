@@ -11,9 +11,9 @@ variable "project_name" {
 }
 
 variable "instance_type" {
-  description = "Tipo de instância EC2 (mínimo recomendado: t3.medium para compilar o LiME)"
+  description = "Tipo de instancia EC2 (t3.micro=Free Tier 750h/mes, t3.medium=compilacao rapida)"
   type        = string
-  default     = "t3.medium"
+  default     = "t3.micro"
 }
 
 variable "allowed_ssh_cidrs" {

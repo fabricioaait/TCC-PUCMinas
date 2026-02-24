@@ -4,6 +4,7 @@
 
 # ── Terraform: estado e diretório de plugins ──────────────────────────────────
 **/.terraform/
+.terraform.lock.hcl
 *.tfstate
 *.tfstate.*
 *.tfstate.backup
