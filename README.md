@@ -1,6 +1,6 @@
 # Forense de Memória em Nuvem com LiME e AWS
 
-**Trabalho de Conclusão de Curso — Ciência da Computação | PUC Minas**
+**Trabalho de Conclusão de Curso Cibersegurança e Governança de Dados | PUC Minas**
 
 Implementação de um pipeline automatizado de resposta a incidentes em instâncias EC2, com captura de memória RAM via [LiME](https://github.com/504ensicsLabs/LiME) e preservação de evidências no Amazon S3.
 
@@ -8,12 +8,14 @@ Implementação de um pipeline automatizado de resposta a incidentes em instânc
 
 ## Visão Geral
 
-O projeto provisiona, via Terraform, toda a infraestrutura necessária para executar um fluxo de *incident response* em uma instância EC2 comprometida:
+O projeto provisiona, via Terraform, toda a infraestrutura do laboratório necessária para executar um fluxo de *incident response* em uma instância EC2 comprometida, o bucket S3, permissões restritas para a execução dos comandos respeitando oconeito de least privilege, assim como as funções Lambda usando Python. 
 
-1. **Captura de RAM** — módulo LiME carregado via SSM Run Command; dump `.lime` enviado ao S3.
-2. **Snapshot EBS** — snapshot dos volumes de disco da instância comprometida.
-3. **Coleta de Metadados** — tags, Security Groups, interfaces de rede e estado da instância em JSON no S3.
-4. **Contenção** — parada da instância após a coleta de todas as evidências.
+ Ações:
+ 
+ **Captura de RAM** — módulo LiME carregado via SSM Run Command; dump `.lime` enviado ao S3.
+ **Snapshot EBS** — snapshot dos volumes de disco da instância comprometida.
+ **Coleta de Metadados** — tags, Security Groups, interfaces de rede e estado da instância em JSON no S3.
+ **Contenção** — parada da instância comprometida após a coleta de todas as evidências.
 
 Cada etapa é executada por uma AWS Lambda independente, permitindo que o fluxo seja acionado manualmente ou por automação (EventBridge, GuardDuty, etc.).
 
@@ -66,7 +68,7 @@ aws lambda invoke \
   --region $REGION /tmp/result-memory.json
 ```
 
-Consulte o [READMEXEC.md](TCC-PUCMinas/READMEXEC.md) para o fluxo completo.
+Consulte o [READMEXEC.md](TCC-PUCMinas/READMEXEC.md) para execução.
 
 ---
 
