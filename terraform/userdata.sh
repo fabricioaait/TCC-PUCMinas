@@ -93,7 +93,9 @@ cat > /usr/local/bin/lime-capture << 'HELPER'
 # Uso: sudo lime-capture [arquivo_de_saida.lime]
 set -e
 
-OUTPUT="${1:-/tmp/memory-$(date +%Y%m%d-%H%M%S).lime}"
+# /tmp eh tmpfs (~50% da RAM). Para t3.micro (1 GB RAM) o dump nao cabe.
+# Usar /var/tmp (volume EBS de 20 GB) como destino padrao.
+OUTPUT="${1:-/var/tmp/memory-$(date +%Y%m%d-%H%M%S).lime}"
 MODULE=$(ls /opt/LiME/src/*.ko 2>/dev/null | head -1)
 
 if [ -z "${MODULE}" ]; then
@@ -106,6 +108,12 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+# Descarregar o modulo se ja estiver no kernel (evita EEXIST no insmod)
+if lsmod | grep -q '^lime'; then
+    echo "[LiME] Modulo ja carregado; descarregando antes de re-capturar..."
+    rmmod lime
+fi
+
 echo "[LiME] Módulo : ${MODULE}"
 echo "[LiME] Destino: ${OUTPUT}"
 echo "[LiME] Iniciando captura de memória RAM..."
@@ -115,6 +123,10 @@ insmod "${MODULE}" "path=${OUTPUT} format=lime"
 echo "[LiME] Captura concluída!"
 echo "[LiME] Arquivo : ${OUTPUT}"
 echo "[LiME] Tamanho : $(du -sh "${OUTPUT}" | cut -f1)"
+
+# Descarregar o modulo apos o dump (boa pratica; libera o kernel)
+rmmod lime || true
+echo "[LiME] Módulo descarregado."
 HELPER
 
 chmod +x /usr/local/bin/lime-capture

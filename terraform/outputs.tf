@@ -31,7 +31,7 @@ output "ssm_command" {
 
 output "lime_capture_command" {
   description = "Comando para iniciar captura de memoria via LiME (executar na instancia)"
-  value       = "sudo lime-capture /tmp/dump-$(date +%Y%m%d-%H%M%S).lime"
+  value       = "sudo lime-capture /var/tmp/dump-$(date +%Y%m%d-%H%M%S).lime"
 }
 
 # =============================================================================
