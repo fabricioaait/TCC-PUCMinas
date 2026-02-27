@@ -90,4 +90,3 @@ s3://<bucket>/<case_id>/<instance_id>/
 
 - [LiME — Linux Memory Extractor](https://github.com/504ensicsLabs/LiME)
 - [AWS Systems Manager Session Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html)
-- [AWS Automated EC2 Security Incident Response](https://systemweakness.com/aws-automated-ec2-security-incident-response)
