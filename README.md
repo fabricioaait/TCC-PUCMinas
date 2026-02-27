@@ -68,7 +68,7 @@ aws lambda invoke \
   --region $REGION /tmp/result-memory.json
 ```
 
-Consulte o [READMEXEC.md](TCC-PUCMinas/READMEXEC.md) para execução.
+Consulte o [READMEXEC.md](TCC-PUCMinas/READMEXEC.md) para execução completa.
 
 ---
 
